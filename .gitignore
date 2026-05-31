@@ -1,0 +1,10 @@
+# Ignorar dependencias de Node
+node_modules/
+**/node_modules/
+
+# Ignorar archivos de entorno con contraseñas o credenciales
+.env
+.env.local
+
+# Archivos del sistema o de base de datos local (opcional)
+.DS_Store
