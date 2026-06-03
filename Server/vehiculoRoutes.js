@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Vehiculo = require('./models/Vehiculo'); 
+const vehiculoController = require('./controllers/vehiculoController');
+const { verificarAdmin } = require('./middleware/authMiddleware');
 
-router.get('/', async (req, res) => {
-    try {
-        const vehiculos = await Vehiculo.findAll();
-        res.json(vehiculos);
-    } catch (err) {
-        res.status(500).json({ message: "Error SQL al obtener vehículos" });
-    }
-});
+// Rutas unificadas con la lógica del controlador
+router.get('/', vehiculoController.obtenerVehiculos);
+router.post('/agregar', verificarAdmin, vehiculoController.agregarVehiculo);
+router.put('/editar/:id', verificarAdmin, vehiculoController.actualizarVehiculo);
+router.delete('/eliminar/:id', verificarAdmin, vehiculoController.eliminarVehiculo);
 
 module.exports = router;

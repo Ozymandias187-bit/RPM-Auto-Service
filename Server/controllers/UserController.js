@@ -104,3 +104,55 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: "Error en la base de datos: " + (error.message || "Error desconocido") });
     }
 };
+
+exports.updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { nombre, nombreUsuario, correo, password, telefono, zona } = req.body;
+
+    try {
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+        }
+
+        const updates = { nombre, nombreUsuario, correo, telefono, zona };
+        
+        if (password && password.trim() !== "") {
+            updates.password = await bcrypt.hash(password, 10);
+        }
+
+        await user.update(updates);
+        
+        res.status(200).json({ 
+            message: "Perfil actualizado con éxito.",
+            user: { id: user.id, nombre, nombreUsuario, correo, rol: user.rol, telefono, zona }
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error al actualizar: " + error.message });
+    }
+};
+
+exports.deleteAccount = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({ message: "Usuario no encontrado." });
+        }
+        await user.destroy();
+        res.status(200).json({ message: "Cuenta eliminada correctamente." });
+    } catch (error) {
+        res.status(500).json({ message: "Error al eliminar cuenta: " + error.message });
+    }
+};
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.findAll({
+            attributes: ['id', 'nombre', 'correo', 'nombreUsuario']
+        });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
