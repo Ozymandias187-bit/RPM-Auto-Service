@@ -1,6 +1,7 @@
 // middleware/authMiddleware.js
 exports.verificarAdmin = (req, res, next) => {
-    // Intenta obtener el rol de los headers para mayor seguridad que el body
+    // ADVERTENCIA: Confiar en el body para el rol es inseguro.
+    // Se recomienda implementar JWT (JSON Web Tokens) para validar la identidad.
     const rol = req.headers['x-user-role'] || req.body.rol; 
 
     if (rol === 'ADMIN') {
