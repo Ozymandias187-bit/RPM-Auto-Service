@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
+const userController = require('../controllers/UserController');
 const { verificarAdmin } = require('../middleware/authMiddleware');
 
 // Rutas de autenticación y gestión de usuario

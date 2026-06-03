@@ -1,4 +1,6 @@
 const Cita = require('../models/Cita');
+const User = require('../models/User');
+const Vehiculo = require('../models/Vehiculo');
 
 exports.crearCita = async (req, res) => {
     try {
@@ -45,8 +47,8 @@ exports.obtenerTodasCitas = async (req, res) => {
     try {
         const citas = await Cita.findAll({
             include: [
-                { model: require('../models/User'), as: 'cliente', attributes: ['nombre', 'correo', 'telefono'] },
-                { model: require('../models/Vehiculo'), as: 'vehiculo', attributes: ['marca', 'modelo', 'anio', 'precio'] }
+                { model: User, as: 'cliente', attributes: ['nombre', 'correo', 'telefono'] },
+                { model: Vehiculo, as: 'vehiculo', attributes: ['marca', 'modelo', 'anio', 'precio'] }
             ],
             order: [['fecha', 'ASC'], ['hora', 'ASC']]
         });
@@ -64,7 +66,7 @@ exports.obtenerCitasPorUsuario = async (req, res) => {
         const citas = await Cita.findAll({
             where: { usuarioId },
             include: [
-                { model: require('../models/Vehiculo'), as: 'vehiculo', attributes: ['marca', 'modelo', 'anio'] }
+                { model: Vehiculo, as: 'vehiculo', attributes: ['marca', 'modelo', 'anio'] }
             ],
             order: [['fecha', 'ASC'], ['hora', 'ASC']]
         });
