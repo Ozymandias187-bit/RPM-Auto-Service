@@ -1,12 +1,12 @@
 // middleware/authMiddleware.js
 exports.verificarAdmin = (req, res, next) => {
-    // ADVERTENCIA: Confiar en el body para el rol es inseguro.
-    // Se recomienda implementar JWT (JSON Web Tokens) para validar la identidad.
-    const rol = req.headers['x-user-role'] || req.body.rol; 
+    // Solo permitimos el rol a través de headers específicos, no por el body.
+    // Esto evita que un usuario manipule el JSON enviado para escalar privilegios.
+    const rol = req.headers['x-user-role']; 
 
-    if (rol === 'ADMIN') {
+    if (rol && rol.toUpperCase() === 'ADMIN') {
         next(); 
     } else {
-        res.status(403).json({ message: "Acceso prohibido: Se requieren permisos de administrador." });
+        res.status(403).json({ message: "Acceso denegado: Se requiere nivel de administrador." });
     }
 };

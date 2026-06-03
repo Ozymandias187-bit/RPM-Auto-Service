@@ -1,6 +1,5 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-console.log("El controlador ha sido cargado");
 exports.register = async (req, res) => {
     // 1. Extraemos todo de una sola vez
     const { nombre, nombreUsuario, correo, password, telefono, zona } = req.body;
